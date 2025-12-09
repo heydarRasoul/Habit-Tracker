@@ -2,6 +2,7 @@ from flask import Flask
 import os
 
 from db import *
+from util.blueprints import register_blueprint
 
 flask_host = os.environ.get("FLASK_HOST")
 flask_port = os.environ.get("FLASK_PORT")
@@ -13,6 +14,8 @@ database_port = os.environ.get("DATABASE_PORT")
 database_name = os.environ.get("DATABASE_NAME")
 
 app = Flask(__name__)
+
+register_blueprint(app)
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = f"{database_scheme}{database_user}@{database_address}:{database_port}/{database_name}"

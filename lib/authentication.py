@@ -34,3 +34,29 @@ def validate_token():
 def fail_response():
     return jsonify({"message": "authentication required"}), 401
 
+
+
+def authenticate(func):
+    @functools.wraps(func)
+    def wrapper_authenticate(*args,**kwargs):
+        auth_info = validate_token()
+
+        return(
+            func(*args, **kwargs) if auth_info else fail_response()
+        )
+    
+    return wrapper_authenticate
+
+
+def authenticate_return_auth(func):
+    @functools.wraps(func)
+    def wrapper_authenticate(*args, **kwargs):
+        auth_info = validate_token()
+      
+        kwargs['auth_info'] = auth_info
+
+        return (
+            func(*args, **kwargs) if auth_info else fail_response()
+        )
+
+    return wrapper_authenticate
