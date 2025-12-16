@@ -60,7 +60,7 @@ def get_habit_by_id(habit_id, auth_info):
 
 @authenticate_return_auth
 def add_habit_to_category(auth_info):
-    post_data = request.form if request.form else request.json()
+    post_data = request.form if request.form else request.json
     
     habit_id = post_data.get("habit_id")
     category_id = post_data.get("category_id")
