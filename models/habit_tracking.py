@@ -8,10 +8,10 @@ class HabitTracking(db.Model):
     __tablename__="HabitTracking"
 
     track_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    habit_id = db.Column(UUID(as_uuid=True), db.ForeignKey("HabitTracking.habit_id"), nullable=False)
+    habit_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Habits.habit_id"), nullable=False)
     status = db.Column(db.String(), nullable=False)
     note = db.Column(db.String())
-    units_completed = db.column(db.String())
+    units_completed = db.Column(db.String())
    
 
     habit = db.relationship("Habits", foreign_keys='[HabitTracking.habit_id]', back_populates = 'habit_tracking')
@@ -24,7 +24,7 @@ class HabitTracking(db.Model):
         self.units_completed=units_completed
       
 
-    def new_habit_obj():
+    def new_tracking_obj():
         return HabitTracking('','','','')
     
 
@@ -33,10 +33,10 @@ class HabitTrackingSchema(ma.Schema):
         fields = ['track_id', 'status', 'note', 'units_completed', 'habit']
 
     track_id= ma.fields.UUID()
-    status=ma.fields.Strings(required=True)
+    status=ma.fields.String(required=True)
     note = ma.fields.String(allow_none=True)
     units_completed = ma.fields.String(allow_none=True)
    
     habit = ma.fields.Nested("HabitsSchema")
 
-HabitTracking_Schema=HabitTrackingSchema()
+habitTracking_schema=HabitTrackingSchema()

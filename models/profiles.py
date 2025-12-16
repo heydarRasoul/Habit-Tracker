@@ -8,7 +8,7 @@ class Profiles(db.Model):
     __tablename__="Profiles"
 
     profile_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Profiles.user_id"), nullable=False)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Users.user_id"), nullable=False)
     first_name = db.Column(db.String(),nullable=False)
     last_name = db.Column(db.String())
     dob = db.Column(db.String())
@@ -33,7 +33,7 @@ class ProfilesSchema(ma.Schema):
         fields = ['profile_id','first_name','last_name','dob','bio','user']
 
     profile_id = ma.fields.UUID()
-    first_name = ma.fiels.String(required=True)
+    first_name = ma.fields.String(required=True)
     last_name = ma.fields.String(allow_none=True)
     dob = ma.fields.String(allow_none=True)
     bio = ma.fields.String(allow_none=True)
@@ -42,3 +42,4 @@ class ProfilesSchema(ma.Schema):
 
 
 profile_schema = ProfilesSchema()
+profiles_schema = ProfilesSchema(many=True)

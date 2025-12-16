@@ -7,7 +7,7 @@ from util.blueprints import register_blueprint
 flask_host = os.environ.get("FLASK_HOST")
 flask_port = os.environ.get("FLASK_PORT")
 
-database_scheme = os.environ.get("DATAABASE_SCHEME")
+database_scheme = os.environ.get("DATABASE_SCHEME")
 database_user = os.environ.get("DATABASE_USER")
 database_address = os.environ.get("DATABASE_ADDRESS")
 database_port = os.environ.get("DATABASE_PORT")

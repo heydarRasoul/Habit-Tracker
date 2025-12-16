@@ -15,13 +15,13 @@ class HabitCategories(db.Model):
 
 
 
-def __init__(self,category_name,description):
-    self.category_name=category_name
-    self.description=description
-   
+    def __init__(self,category_name,description):
+        self.category_name=category_name
+        self.description=description
+    
 
-def new_habit_obj():
-    return HabitCategories('','')
+    def new_habitCategory_obj():
+        return HabitCategories('','')
 
 
 class HabitCategoriesSchema(ma.Schema):
@@ -29,11 +29,11 @@ class HabitCategoriesSchema(ma.Schema):
         fields = ['category_id', 'category_name', 'description', 'habits']
 
     category_id= ma.fields.UUID()
-    category_name=ma.fields.Strings(required=True)
+    category_name=ma.fields.String(required=True)
     description = ma.fields.String(allow_none=True)
    
     user = ma.fields.Nested("UsersSchema")
     habits = ma.fields.Nested("HabitsSchema", many=True, exclude=['categories'])
 
-HabitCategory_schema=HabitCategoriesSchema()
-HabitCategories_schema=HabitCategoriesSchema(many=True)
+habitCategory_schema=HabitCategoriesSchema()
+habitCategories_schema=HabitCategoriesSchema(many=True)

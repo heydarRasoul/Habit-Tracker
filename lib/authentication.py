@@ -25,7 +25,7 @@ def validate_token():
     existing_token = db.session.query(AuthTokens).filter(AuthTokens.auth_token == auth_token).first()
 
     if existing_token:
-        if existing_token.expiration > datetime.now():
+        if existing_token.expiration_date > datetime.now():
             return existing_token
 
     return False

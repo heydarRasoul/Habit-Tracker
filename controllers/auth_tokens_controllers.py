@@ -32,10 +32,9 @@ def auth_token_add():
         
         existing_tokens_query = db.session.query(AuthTokens).filter(AuthTokens.user_id==user_id).first()
 
-        if existing_tokens_query:
-            for token in existing_tokens_query:
-                if token.expiration_date < now_datetime:
-                    db.session.delete(token)
+        if existing_tokens_query:   
+            if  existing_tokens_query.expiration_date < now_datetime:
+                db.session.delete( existing_tokens_query)
         
         new_token = AuthTokens(user_id=user_id, expiration_date=expiration_datetime)
 
