@@ -1,82 +1,165 @@
-# Habit Tracker Backend
+# Habit Tracker Backend API
 
 ## Project Overview
 
-A multi-tenant habit tracking backend to monitor daily habits, track progress, categorize habits, set reminders, and join challenges.
+The **Habit Tracker Backend API** is a tracking backend service designed to help users create, manage, and track their habits. It supports **multi-tenancy**, **role-based access control**, habit categorization, reminders, progress tracking, and habit challenges.
 
-## Features
+---
 
-- Multi-user accounts with roles (`admin`, `user`)
-- Create and track habits
-- Monitor progress with streaks and units completed
-- Categorize habits for better organization
-- Set reminders for habits
-- Participate in habit challenges
+## Project Goals
+
+- Enable multi-user support with isolated data
+- Implement role-based permissions for admins and users
+- Track habit progress over time
+- Organize habits using categories and challenges
+- Provide a clean, scalable backend architecture
+
+---
+
+## Core Features
+
+- User & profile management
+- Habit creation and management
+- Habit progress tracking
+- Habit reminders
+- Habit categorization
+- Habit challenges
+- Role-based access control (Admin / User)
+
+---
+
+## Database Design
+
+- Users 1–1 Profiles
+- Habits 1–1 habit_tracking
+- Users 1–M Habits
+- Users 1–M HabitReminders
+- Users M–M HabitChallenges
+- Habits M–M HabitCategories via HabitCategoryXref
+
+---
 
 ## Database Tables
 
 ### Users
 
-- Stores account information
-- Columns: `user_id`, `username`, `email`, `password_hash`, `active`, `role`, `created_at`
+- user_id (PK)
+- username
+- email
+- phone
+- password
+- role (admin, user)
+- is_active
+- created_at
 
 ### Profiles
 
-- Stores user personal info
-- Columns: `profile_id`, `user_id`, `full_name`, `dob`, `bio`, `avatar_url`
+- profile_id (PK)
+- user_id (FK)
+- first_name
+- last_name
+- dob
+- bio
 
 ### Habits
 
-- Stores user habits
-- Columns: `habit_id`, `user_id`, `name`, `description`, `frequency`, `goal`, `challenge_id`, `created_at`
+- habit_id (PK)
+- user_id (FK)
+- title
+- description
+- frequency
+- is_active
+- start_date
+- end_date
 
-### habit_tracking
+### HabitTracking
 
-- Tracks habit completion/progress
-- Columns: `tracking_id`, `habit_id`, `status`, `units_completed`, `note`, `streak_count`, `recorded_at`
+- track_id (PK)
+- habit_id (FK)
+- status
+- note
+- unit_completed
 
 ### HabitCategories
 
-- Categorizes habits
-- Columns: `category_id`, `name`, `description`
+- category_id (PK)
+- category_name
+- description
 
 ### HabitCategoryXref
 
-- Xref table for many-to-many Habits ↔ HabitCategories
-- Columns: `habit_id`, `category_id`
+- habit_id (FK)
+- category_id (FK)
 
 ### HabitReminders
 
-- Stores habit reminders
-- Columns: `reminder_id`, `habit_id`, `user_id`, `reminder_time`, `repeat_days`, `message`, `active`, `created_at`
+- reminder_id (PK)
+- habit_id (FK)
+- user_id (FK)
+- reminder_time
+- repeat_days
+- message
+- created_date
+- is_active
 
 ### HabitChallenges
 
-- Stores challenges for habits
-- Columns: `challenge_id`, `user_id`, `name`, `description`, `start_date`, `end_date`, `created_at`
+- challenge_id (PK)
+- challenge_name
+- description
+- start_date
+- end_date
+- created_date
 
-### UsersChallengeXref
+---
 
-- Xref table for many-to-many Habits ↔ HabitCategories
-- Columns: `user_id`, `challenge_id`
+## Roles & Permissions
 
-## Roles
+### Admin
 
-- **Admin**: add admin can do
-- **User**: add user can do
+- Manage users
+- Manage categories
+- Manage challenges
+- View all habits
+- Assign habits to categories
 
-## Relationships
+### User
+
+- Manage own profile
+- Manage own habits
+- Track habit progress
+- Manage reminders
+- Join challenges
+- View categories and challenges
+
+---
+
+## API Design Principles
+
+- Clear endpoints
+- Role-based authorization
+- Ownership validation
+- Consistent error handling
+
+---
+
+## ERD Summary
 
 - Users 1–1 Profiles
+- Habits 1–1 habit_tracking
 - Users 1–M Habits
 - Users 1–M HabitReminders
-- Users 1–M HabitChallenges
-- Habits 1–M habit_tracking
-- Habits M–M HabitCategories via HabitCategoryMap
-- HabitChallenges 1–M Habits
+- Users M–M HabitChallenges
+- Habits M–M HabitCategories via HabitCategoryXref
 
-## Notes
+---
 
-- All PKs are UUIDs
-- Supports multi-tenancy
-- Designed for future extension: analytics, gamification, social features
+## Conclusion
+
+This backend provides a scalable, secure foundation for a habit tracking application and can easily be extended with analytics, notifications, or a frontend client.
+
+## My Backend Development Journey - What I Learned This Semester
+
+Throughout this semester, I learned how to build a complete backend application using Python, Flask, SQLAlchemy, and Marshmallow. I gained experience designing a relational database from scratch, creating an ERD, and implementing one-to-one, one-to-many, and many-to-many relationships while supporting multi-tenancy so multiple users can safely manage their own data. I learned how to structure a Flask application using blueprints, separate models, controllers, and schemas, and implement full CRUD functionality for all resources. I also learned how to apply error handling and enforce permissions using user roles, ensuring secure access to different endpoints.
+
+Working on my Habit Tracker capstone project helped me connect everything we learned in class into a real-world application. I learned how to use Marshmallow schemas for validation and serialization, apply reflection in controllers, and build a complete Postman collection for testing all endpoints. My favorite part of the class was seeing how all the pieces fit together—from database design to API testing—and gaining confidence in debugging and building backend systems that follow best practices.
